@@ -1,4 +1,4 @@
-create table if not exists public.news (
+create table if not exists public.books (
   id uuid primary key default gen_random_uuid(),
   title text not null check (length(title) between 3 and 160),
   content text not null,
@@ -14,21 +14,21 @@ begin
   return new;
 end; $$;
 
-drop trigger if exists trg_touch_updated_at on public.news;
+drop trigger if exists trg_touch_updated_at on public.books;
 create trigger trg_touch_updated_at
-before update on public.news
+before update on public.books
 for each row execute procedure public.touch_updated_at();
 
-alter table public.news enable row level security;
+alter table public.books enable row level security;
 
-create policy "read all news (auth users)" on public.news
+create policy "read all books (auth users)" on public.books
 for select using (auth.role() = 'authenticated');
 
-create policy "insert own news" on public.news
+create policy "insert own books" on public.books
 for insert with check (auth.uid() = author_id);
 
-create policy "update own news" on public.news
+create policy "update own books" on public.books
 for update using (auth.uid() = author_id);
 
-create policy "delete own news" on public.news
+create policy "delete own books" on public.books
 for delete using (auth.uid() = author_id);

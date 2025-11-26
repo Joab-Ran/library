@@ -14,7 +14,32 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-A API estará disponível em `http://localhost:8000`
+````markdown
+# Books API
+
+API de livros desenvolvida com FastAPI e Supabase.
+
+## 🚀 Como rodar o projeto localmente
+
+1. (Opcional) Crie e ative um ambiente virtual:
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+2. Instale as dependências:
+```powershell
+pip install -r requirements.txt
+```
+
+3. Inicie o servidor (recomendo usar `python -m uvicorn` para evitar problemas de PATH):
+```powershell
+python -m uvicorn main:app --reload --port 8000
+```
+
+A API estará disponível em `http://localhost:8000` e a documentação interativa em `http://localhost:8000/docs`.
+
+> Observação: não comite arquivos de ambiente (`.env`) no repositório. Use variáveis de ambiente locais ou um gerenciador de segredos.
 
 ## 🌐 Como hospedar no Render
 
@@ -37,22 +62,22 @@ Certifique-se de que seu repositório contém os seguintes arquivos:
 1. Acesse [https://dashboard.render.com](https://dashboard.render.com)
 2. Clique em **"New +"** e selecione **"Web Service"**
 3. Conecte seu repositório Git (autorize o acesso se necessário)
-4. Selecione o repositório do projeto `news`
+4. Selecione o repositório do projeto
 
 #### 3. Configurar o Web Service
 
 Preencha as seguintes informações:
 
-- **Name**: `news-api` (ou nome de sua preferência)
-- **Region**: Escolha a região mais próxima (ex: `Oregon (US West)`)
+- **Name**: `books-api` (ou nome de sua preferência)
+- **Region**: Escolha a região mais próxima
 - **Branch**: `main` (ou sua branch principal)
 - **Runtime**: `Python 3`
 - **Build Command**: 
-  ```
+  ```bash
   pip install -r requirements.txt
   ```
 - **Start Command**: 
-  ```
+  ```bash
   uvicorn main:app --host 0.0.0.0 --port $PORT
   ```
 
@@ -64,7 +89,7 @@ Na seção **Environment Variables**, adicione as seguintes variáveis:
 |-----|-------|
 | `SUPABASE_URL` | Sua URL do Supabase (ex: `https://xxx.supabase.co`) |
 | `SUPABASE_ANON_KEY` | Sua chave anônima do Supabase |
-| `TABLE_NEWS` | `news` (nome da tabela) |
+| `TABLE_BOOKS` | `books` (nome da tabela; o código usa `TABLE_BOOKS` por padrão) |
 
 **Como obter as credenciais do Supabase:**
 1. Acesse seu projeto no [Supabase](https://app.supabase.com)
@@ -88,8 +113,8 @@ Na seção **Environment Variables**, adicione as seguintes variáveis:
 #### 7. Acessar sua API
 
 Após o deploy bem-sucedido:
-- Sua API estará disponível em: `https://news-api.onrender.com` (substitua pelo nome que você escolheu)
-- Acesse a documentação interativa em: `https://news-api.onrender.com/docs`
+- Sua API estará disponível em `https://<seu-serviço>.onrender.com` (substitua pelo nome que você escolheu)
+- Acesse a documentação interativa em: `https://<seu-serviço>.onrender.com/docs`
 
 ### ⚙️ Configurações Adicionais
 
@@ -116,6 +141,13 @@ Por padrão, o Render faz deploy automático quando você faz push para a branch
 #### Erro: "RuntimeError: Configure SUPABASE_URL e SUPABASE_ANON_KEY"
 - Verifique se as variáveis de ambiente `SUPABASE_URL` e `SUPABASE_ANON_KEY` estão configuradas corretamente no Render
 
+#### Erro: "uvicorn não é reconhecido"
+- Se o terminal retornar que `uvicorn` não está reconhecido, use o intérprete Python que tem as dependências instaladas:
+  ```powershell
+  python -m uvicorn main:app --reload --port 8000
+  ```
+  Ou ative o virtualenv antes de rodar `uvicorn` diretamente.
+
 #### Aplicação fica "suspensa" no plano gratuito
 - O plano gratuito do Render suspende a aplicação após 15 minutos de inatividade
 - A primeira requisição após a suspensão pode levar ~30 segundos para "acordar" o serviço
@@ -132,4 +164,6 @@ Para atualizar sua aplicação:
 1. Faça commit e push das alterações no repositório
 2. O Render detectará automaticamente e iniciará um novo deploy
 3. Acompanhe o progresso na aba **"Events"**
+
+````
 
